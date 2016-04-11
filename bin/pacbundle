@@ -1,0 +1,69 @@
+#!/bin/bash
+#
+#   Pacbundle - pacman simple wrapper
+#
+#   Author:   Masaya Tk (@844196)
+#   Original: 0x414A/pacbundle
+#
+#   License: MIT
+#
+
+
+function echo_version() {
+    echo 'v0.1.0'
+}
+
+function echo_help() {
+    echo 'Usage:'
+    echo '    pacbundle [commands]'
+    echo ''
+    echo 'Sub commands:'
+    echo '    install                             # install package'
+    echo '    help                                # display this help and exit'
+    echo '    version                             # display version and exit'
+}
+
+function abort() {
+    echo "$1" 1>&2
+    exit 1
+}
+
+function catalog_sync() {
+    sudo pacman -Sy
+}
+
+function upgrade() {
+    sudo pacman -Syu --noconfirm
+}
+
+function package_install() {
+    sudo pacman -S --needed --noconfirm $1
+}
+
+function Setup::Pacman.group() {
+    cat - | while read line; do
+        eval ${line#"${1}."}
+    done
+}
+
+`which pacman >/dev/null 2>&1` || abort 'packbundle: required pacman'
+
+case $1 in
+    'install')
+        pacmanfile_path=$2
+        [[ -e ${pacmanfile_path:='./Pacmanfile'} ]] || abort 'pacbundle: No such a Pacmanfile'
+        source $pacmanfile_path
+        ;;
+    'version')
+        echo_version
+        exit 0
+        ;;
+    'help')
+        echo_help
+        exit 0
+        ;;
+    *)
+        echo_help
+        exit 1
+        ;;
+esac
