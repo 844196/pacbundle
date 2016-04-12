@@ -7,7 +7,7 @@
 ```shell-session
 $ git clone https://github.com/844196/pacbundle
 $ cd pacbundle
-$ make install
+# make install
 ```
 
 ## Usgae
@@ -32,15 +32,15 @@ or
 # vim:set filetype=sh:
 
 Setup::Pacman.group 'package' <<end
-    package.catalog_sync
-    package.upgrade
+  package.catalog_sync
+  package.upgrade
 end
 
 Setup::Pacman.group 'toolkit' <<end
-    toolkit.package_install vim
-    toolkit.package_install git
-    toolkit.package_install tmux
-    toolkit.package_install zsh
+  toolkit.package_install vim
+  toolkit.package_install git
+  toolkit.package_install tmux
+  toolkit.package_install zsh
 end
 ```
 
