@@ -51,8 +51,13 @@ function Setup::Pacman.group() {
 case $1 in
     'install')
         pacmanfile_path=$2
-        [[ -e ${pacmanfile_path:='./Pacmanfile'} ]] || abort 'pacbundle: No such a Pacmanfile'
-        source $pacmanfile_path
+        if [[ -e ${pacmanfile_path:='./Pacmanfile'} ]]; then
+            source $pacmanfile_path
+        elif [[ -n ${stdin:="`cat < /dev/stdin`"} ]]; then
+            eval "$stdin"
+        else
+            abort 'pacbundle: No such a Pacmanfile'
+        fi
         ;;
     'version')
         echo_version
